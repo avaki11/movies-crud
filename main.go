@@ -26,7 +26,13 @@ var movies = []Movie{}
 func getMovie(response http.ResponseWriter, request *http.Request) {
 
 	response.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(response).Encode(movies)
+	params := mux.Vars(request)
+	for _, item := range movies {
+		if item.ID == params["id"] {
+			json.NewEncoder(response).Encode(item)
+			return
+		}
+	}
 
 }
 
@@ -39,6 +45,13 @@ func deleteMovie(response http.ResponseWriter, request *http.Request) {
 			break
 		}
 	}
+	json.NewEncoder(response).Encode(movies)
+}
+
+func getAllMovies(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(response).Encode(movies)
+
 }
 
 func main() {
